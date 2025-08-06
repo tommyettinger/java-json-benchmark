@@ -1,5 +1,9 @@
 package com.github.fabienrenaud.jjb.provider;
 
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonString;
+import com.badlogic.gdx.utils.JsonWriter.OutputType;
 import com.dslplatform.json.DslJson;
 import com.dslplatform.json.runtime.Settings;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -186,4 +190,30 @@ public class UsersJsonProvider implements JsonProvider<Users> {
             .setPreserveProtoFieldNames(true)
             .setWriteEnumsAsInts(false));
 
+    @Override
+    public Json libgdx_Json() {
+        return LIBGDX_JSON.get();
+    }
+
+    @Override
+    public JsonReader libgdx_JsonReader() {
+   	 return LIBGDX_JSONREADER.get();
+    }
+
+    @Override
+    public JsonString libgdx_JsonString() {
+   	 JsonString writer = LIBGDX_JSONSTRING.get();
+   	 writer.reset();
+   	 return writer;
+    }
+
+//    @Override
+//    public JsonWriter libgdx_JsonWriter() {
+//   	 return LIBGDX_JSONWRITER.get();
+//    }
+
+    private static final ThreadLocal<Json> LIBGDX_JSON = ThreadLocal.withInitial( () -> new Json(OutputType.json));
+    private static final ThreadLocal<JsonReader> LIBGDX_JSONREADER = ThreadLocal.withInitial( () -> new JsonReader());
+    private static final ThreadLocal<JsonString> LIBGDX_JSONSTRING = ThreadLocal.withInitial( () -> new JsonString());
+//    private static final ThreadLocal<JsonWriter> LIBGDX_JSONWRITER = ThreadLocal.withInitial( () -> new JsonWriter());
 }

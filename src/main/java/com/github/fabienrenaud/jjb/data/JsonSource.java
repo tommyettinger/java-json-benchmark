@@ -26,6 +26,7 @@ public abstract class JsonSource<T> {
 
     private final T[] jsonAsObject;
     private final String[] jsonAsString;
+    private final char[][] jsonAsChars;
     private final byte[][] jsonAsBytes;
     private final ProtoMessage<?>[] jsonAsQuickbufObject;
     private final ThreadLocal<ByteArrayInputStream[]> jsonAsByteArrayInputStream;
@@ -41,6 +42,7 @@ public abstract class JsonSource<T> {
 
         this.jsonAsObject = newPojoArray(quantity);
         this.jsonAsString = new String[quantity];
+        this.jsonAsChars = new char[quantity][];
         this.jsonAsBytes = new byte[quantity][];
         this.jsonAsQuickbufObject = new ProtoMessage<?>[quantity];
 
@@ -85,6 +87,7 @@ public abstract class JsonSource<T> {
 
                 String json = provider.jackson().writeValueAsString(obj);
                 jsonAsString[i] = json;
+                jsonAsChars[i] = json.toCharArray();
                 jsonAsBytes[i] = json.getBytes();
                 jsonAsQuickbufObject[i] = provider().quickbufPojo().clearQuick().clone().mergeFrom(
                         us.hebi.quickbuf.JsonSource.newInstance(jsonAsBytes[i]).setIgnoreUnknownFields(false));
@@ -101,6 +104,10 @@ public abstract class JsonSource<T> {
 
     public String nextString() {
         return jsonAsString[index(jsonAsString.length)];
+    }
+    
+    public char[] nextChars() {
+   	 return jsonAsChars[index(jsonAsString.length)];
     }
 
     public InputStream nextInputStream() {

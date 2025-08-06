@@ -13,6 +13,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
 public class Serialization extends JsonBench {
@@ -23,97 +24,75 @@ public class Serialization extends JsonBench {
     @Benchmark
     @Override
     public Object gson() {
-        StringBuilder b = JsonUtils.stringBuilder();
-        JSON_SOURCE().provider().gson().toJson(JSON_SOURCE().nextPojo(), b);
-        return b;
+        return JSON_SOURCE().provider().gson().toJson(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object jackson() throws Exception {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().jackson().writeValue(baos, JSON_SOURCE().nextPojo());
-        return baos;
+   	  return JSON_SOURCE().provider().jackson().writeValueAsString(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object jackson_afterburner() throws Exception {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().jacksonAfterburner().writeValue(baos, JSON_SOURCE().nextPojo());
-        return baos;
+        return JSON_SOURCE().provider().jacksonAfterburner().writeValueAsString(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object jackson_blackbird() throws Exception {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().jacksonBlackbird().writeValue(baos, JSON_SOURCE().nextPojo());
-        return baos;
+        return JSON_SOURCE().provider().jacksonBlackbird().writeValueAsString(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object genson() {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().genson().serialize(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        return JSON_SOURCE().provider().genson().serialize(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object yasson() {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().yasson().toJson(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        return JSON_SOURCE().provider().yasson().toJson(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object fastjson() throws Exception {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON.writeTo(baos, JSON_SOURCE().nextPojo());
-        return baos;
+        return JSON.toJSONString(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object fastjson_features() throws Exception {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON.writeTo(baos, JSON_SOURCE().nextPojo(), JSON_SOURCE().fastjsonFeatures().writerContext());
-        return baos;
+        return JSON.toJSONString(JSON_SOURCE().nextPojo(), JSON_SOURCE().fastjsonFeatures().writerContext());
     }
 
     @Benchmark
     @Override
     public Object flexjson() {
-        StringBuilder b = JsonUtils.stringBuilder();
-        JSON_SOURCE().provider().flexjsonSer().exclude("*.class").deepSerialize(JSON_SOURCE().nextPojo(), b);
-        return b;
+        return JSON_SOURCE().provider().flexjsonSer().exclude("*.class").deepSerialize(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object boon() {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().boon().writeValue(baos, JSON_SOURCE().nextPojo());
-        return baos;
+        return JSON_SOURCE().provider().boon().writeValueAsString(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object johnzon() {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().johnzon().writeObject(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        return JSON_SOURCE().provider().johnzon().writeObjectAsString(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object jsonsmart() throws Exception {
-        StringBuilder b = JsonUtils.stringBuilder();
-        net.minidev.json.JSONValue.writeJSONString(JSON_SOURCE().nextPojo(), b);
-        return b;
+        StringWriter writer = JsonUtils.stringWriter();
+        net.minidev.json.JSONValue.writeJSONString(JSON_SOURCE().nextPojo(), writer);
+        return writer.toString();
     }
 
     @Benchmark
@@ -121,7 +100,7 @@ public class Serialization extends JsonBench {
     public Object dsljson() throws Exception {
         ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
         JSON_SOURCE().provider().dsljson().serialize(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        return baos.toString();
     }
 
     @Benchmark
@@ -129,23 +108,19 @@ public class Serialization extends JsonBench {
     public Object dsljson_reflection() throws Exception {
         ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
         JSON_SOURCE().provider().dsljson_reflection().serialize(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        return baos.toString();
     }
 
     @Benchmark
     @Override
     public Object avajejsonb_jackson() {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().avajeJsonb_jackson().toJson(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        return JSON_SOURCE().provider().avajeJsonb_jackson().toJson(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
     @Override
     public Object avajejsonb() {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().avajeJsonb_default().toJson(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        return JSON_SOURCE().provider().avajeJsonb_default().toJson(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
@@ -153,7 +128,7 @@ public class Serialization extends JsonBench {
     public Object logansquare() throws Exception {
         ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
         LoganSquare.serialize(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        return baos.toString();
     }
 
     @Benchmark
@@ -169,15 +144,13 @@ public class Serialization extends JsonBench {
         BufferedSink sink = Okio.buffer(Okio.sink(baos));
         JSON_SOURCE().provider().moshi().toJson(sink, JSON_SOURCE().nextPojo());
         sink.flush();
-        return baos;
+        return baos.toString();
     }
 
     @Benchmark
     @Override
     public Object qson() throws Exception {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        JSON_SOURCE().provider().qson().writeStream(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        return JSON_SOURCE().provider().qson().writeString(JSON_SOURCE().nextPojo());
     }
 
     @Benchmark
@@ -189,16 +162,14 @@ public class Serialization extends JsonBench {
     @Benchmark
     @Override
     public Object wast() throws Exception {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        io.github.wycst.wast.json.JSON.writeJsonTo(JSON_SOURCE().nextPojo(), baos);
-        return baos;
+        StringWriter writer = JsonUtils.stringWriter();
+        io.github.wycst.wast.json.JSON.writeJsonTo(JSON_SOURCE().nextPojo(), writer);
+        return writer.toString();
     }
 
     @Benchmark
     @Override
-    public Object libgdx() throws Exception {
-        ByteArrayOutputStream baos = JsonUtils.byteArrayOutputStream();
-        new com.badlogic.gdx.utils.Json(JsonWriter.OutputType.json).toJson(JSON_SOURCE().nextPojo(), new OutputStreamWriter(baos, StandardCharsets.UTF_8));
-        return baos;
+    public Object libgdx_Json() throws Exception {
+        return JSON_SOURCE().provider().libgdx_Json().toJson(JSON_SOURCE().nextPojo());
     }
 }

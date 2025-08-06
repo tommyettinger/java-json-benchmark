@@ -3,6 +3,7 @@ package com.github.fabienrenaud.jjb.stream;
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.owlike.genson.stream.ObjectReader;
+import com.badlogic.gdx.utils.JsonSkimmer;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -22,4 +23,6 @@ public interface StreamDeserializer<T> {
     T underscore_java(String reader) throws IOException;
 
     T antons(String reader) throws IOException;
+
+    Object libgdx_JsonReader (com.badlogic.gdx.utils.JsonReader reader, char[] chars) throws Exception;
 }

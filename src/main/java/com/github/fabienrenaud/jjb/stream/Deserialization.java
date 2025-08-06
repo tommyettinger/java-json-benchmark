@@ -398,4 +398,11 @@ public class Deserialization extends JsonBench {
         return JSON_SOURCE().streamDeserializer().antons(JSON_SOURCE().nextString());
     }
 
+    @Benchmark
+    @Override
+    public Object libgdx_JsonReader () throws Exception {
+ 	     JSON_SOURCE().streamDeserializer().libgdx_JsonReader(
+ 	   	  JSON_SOURCE().provider().libgdx_JsonReader(), JSON_SOURCE().nextChars());
+  	     return null;
+  	 }
 }

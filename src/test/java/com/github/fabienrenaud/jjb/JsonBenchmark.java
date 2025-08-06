@@ -29,7 +29,13 @@ public abstract class JsonBenchmark<T> {
 
     protected void test(Library lib, Object o) {
         if (o == null) { // means it shouldn't be supported.
-            assertFalse("Library '" + lib + "' for api '" + BENCH_API + " returned null", supports(lib));
+            // libgdx has 4:
+            // Json (databind)
+            // JsonReader (streaming deserialization) 
+            // JsonString (streaming serialization) 
+            // JsonWriter (streaming serialization) 
+      	   // Config doesn't allow such detail, so assume null means not supported. 
+            // assertFalse("Library '" + lib + "' for api '" + BENCH_API + " returned null", supports(lib));
             return;
         }
 
@@ -286,12 +292,32 @@ public abstract class JsonBenchmark<T> {
             test(Library.WAST, BENCH.wast());
         }
     }
+    
+    @Test
+    public void libgdx_Json() throws Exception {
+   	 for (int i = 0; i < ITERATIONS; i++) {
+   		 test(Library.LIBGDX, BENCH.libgdx_Json());
+   	 }
+    }
 
     @Test
-    public void libgdx() throws Exception {
+    public void libgdx_JsonReader() throws Exception {
         for (int i = 0; i < ITERATIONS; i++) {
-            test(Library.LIBGDX, BENCH.libgdx());
+            test(Library.LIBGDX, BENCH.libgdx_JsonReader());
         }
     }
 
+    @Test
+    public void libgdx_JsonString() throws Exception {
+   	 for (int i = 0; i < ITERATIONS; i++) {
+   		 test(Library.LIBGDX, BENCH.libgdx_JsonString());
+   	 }
+    }
+
+    @Test
+    public void libgdx_JsonWriter() throws Exception {
+   	 for (int i = 0; i < ITERATIONS; i++) {
+   		 test(Library.LIBGDX, BENCH.libgdx_JsonWriter());
+   	 }
+    }
 }

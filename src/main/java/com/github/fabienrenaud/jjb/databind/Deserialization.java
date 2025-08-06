@@ -159,7 +159,8 @@ public class Deserialization extends JsonBench {
 
     @Benchmark
     @Override
-    public Object libgdx() throws Exception {
-        return new com.badlogic.gdx.utils.Json(JsonWriter.OutputType.json).fromJson(JSON_SOURCE().pojoType(), JSON_SOURCE().nextString());
+    public Object libgdx_Json() throws Exception {
+   	 char[] chars = JSON_SOURCE().nextChars();
+       return JSON_SOURCE().provider().libgdx_Json().fromJson(JSON_SOURCE().pojoType(), chars, 0, chars.length);
     }
 }

@@ -1,5 +1,7 @@
 package com.github.fabienrenaud.jjb.stream;
 
+import com.badlogic.gdx.utils.JsonSkimmer;
+import com.badlogic.gdx.utils.JsonValue;
 import com.fasterxml.jackson.core.JsonParser;
 import com.github.fabienrenaud.jjb.model.Users;
 import com.github.fabienrenaud.jjb.model.Users.Friend;
@@ -972,6 +974,111 @@ public class UsersStreamDeserializer implements StreamDeserializer<Users> {
                 }
             }
             token = scanner.next();
+        }
+        return r;
+    }
+
+    @Override
+    public Object libgdx_JsonReader (com.badlogic.gdx.utils.JsonReader reader, char[] chars) throws Exception {
+        JsonValue root = reader.parse(chars, 0, chars.length);
+        Users uc = new Users();
+        for (JsonValue entry = root.child; entry != null; entry = entry.next) {
+            if ("users".equals(entry.name)) {
+                uc.setUsers(new ArrayList<>());
+                for (JsonValue user = root.child; user != null; user = user.next)
+                    uc.getUsers().add(libgdx_JsonReader(user));
+            }
+        }
+        return uc;
+    }
+
+    private User libgdx_JsonReader (JsonValue user) throws IOException {
+        User r = new User();
+        for (JsonValue userField = user.child; userField != null; userField = userField.next) {
+            if (userField.name == null) continue;
+            switch (userField.name) {
+            case "id":
+                r.setId(userField.asString());
+                break;
+            case "index":
+                r.setIndex(userField.asInt());
+                break;
+            case "guid":
+                r.setGuid(userField.asString());
+                break;
+            case "isActive":
+                r.setIsActive(userField.asBoolean());
+                break;
+            case "balance":
+                r.setBalance(userField.asString());
+                break;
+            case "picture":
+                r.setPicture(userField.asString());
+                break;
+            case "age":
+                r.setAge(userField.asInt());
+                break;
+            case "eyeColor":
+                r.setEyeColor(userField.asString());
+                break;
+            case "name":
+                r.setName(userField.asString());
+                break;
+            case "gender":
+                r.setGender(userField.asString());
+                break;
+            case "company":
+                r.setCompany(userField.asString());
+                break;
+            case "email":
+                r.setEmail(userField.asString());
+                break;
+            case "phone":
+                r.setPhone(userField.asString());
+                break;
+            case "address":
+                r.setAddress(userField.asString());
+                break;
+            case "about":
+                r.setAbout(userField.asString());
+                break;
+            case "registered":
+                r.setRegistered(userField.asString());
+                break;
+            case "latitude":
+                r.setLatitude(userField.asDouble());
+                break;
+            case "longitude":
+                r.setLongitude(userField.asDouble());
+                break;
+            case "greeting":
+                r.setGreeting(userField.asString());
+                break;
+            case "favoriteFruit":
+                r.setFavoriteFruit(userField.asString());
+                break;
+            case "tags":
+                r.setTags(new ArrayList<>());
+                for (JsonValue tag = userField.child; tag != null; tag = tag.next)
+                    r.getTags().add(tag.asString());
+                break;
+            case "friends":
+                ArrayList friends = new ArrayList<>();
+                r.setFriends(friends);
+                for (JsonValue friend = userField.child; friend != null; friend = friend.next) {
+                    Friend f = new Friend();
+                    for (JsonValue friendField = friend.child; friendField != null; friendField = friendField.next) {
+                        switch (friendField.name) {
+                        case "id":
+                            f.setId(friendField.asString());
+                            break;
+                        case "name":
+                            f.setName(friendField.asString());
+                        }
+                    }
+                    friends.add(f);
+                }
+            }
         }
         return r;
     }

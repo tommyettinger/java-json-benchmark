@@ -1,15 +1,20 @@
 package com.github.fabienrenaud.jjb.provider;
 
+import org.apache.johnzon.mapper.Mapper;
+
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonString;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.dslplatform.json.DslJson;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.owlike.genson.Genson;
+
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import io.quarkus.qson.generator.QsonMapper;
-import org.apache.johnzon.mapper.Mapper;
-
 import jakarta.json.bind.Jsonb;
 import us.hebi.quickbuf.JsonSink;
 import us.hebi.quickbuf.ProtoMessage;
@@ -60,4 +65,11 @@ public interface JsonProvider<T> {
 
     JsonSink quickbufSink();
 
+    Json libgdx_Json();
+
+    JsonReader libgdx_JsonReader();
+    
+    JsonString libgdx_JsonString();
+    
+//    JsonWriter libgdx_JsonWriter();
 }

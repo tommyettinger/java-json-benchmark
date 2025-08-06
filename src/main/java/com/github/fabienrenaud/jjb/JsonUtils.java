@@ -2,6 +2,7 @@ package com.github.fabienrenaud.jjb;
 
 import jakarta.json.spi.JsonProvider;
 import java.io.ByteArrayOutputStream;
+import java.io.StringWriter;
 
 /**
  *
@@ -29,7 +30,15 @@ public final class JsonUtils {
         return b;
     }
 
+    public static StringWriter stringWriter() {
+   	 StringWriter writer = THREAD_STRING_WRITER.get();
+   	 writer.getBuffer().setLength(0);
+   	 return writer;
+    }
+
     private static final ThreadLocal<ByteArrayOutputStream> THREAD_BYTE_ARRAY_OUTPUT_STREAM = ThreadLocal.withInitial(ByteArrayOutputStream::new);
 
     private static final ThreadLocal<StringBuilder> THREAD_STRING_BUILDER = ThreadLocal.withInitial(StringBuilder::new);
+
+    private static final ThreadLocal<StringWriter> THREAD_STRING_WRITER = ThreadLocal.withInitial(StringWriter::new);
 }

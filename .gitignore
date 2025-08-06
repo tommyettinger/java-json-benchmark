@@ -12,6 +12,9 @@ build/
 *.iml
 /nbproject/
 out/
+/.settings
+/.classpath
+/.project
 
 # Misc 
 .DS_Store

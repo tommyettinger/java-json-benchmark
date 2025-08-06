@@ -3521,7 +3521,7 @@ public final class QuickbufSchema {
             }
 
             /**
-             * @param value The numeric wire value of the corresponding enum entry.
+             * @param number The numeric wire value of the corresponding enum entry.
              * @param other Fallback value in case the value is not known.
              * @return The enum associated with the given numeric wire value, or the fallback value if unknown.
              */

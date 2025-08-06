@@ -1,4 +1,45 @@
-[![Java CI](https://github.com/fabienrenaud/java-json-benchmark/actions/workflows/gradle.yml/badge.svg)](https://github.com/fabienrenaud/java-json-benchmark/actions/workflows/gradle.yml)
+
+# This fork	
+
+This fork adds libgdx benchmarks. It also changes benchmarks so they all serialize to a JSON string. The original repo serializes half to string and the rest to ByteArrayOutputStream, making for a flawed comparison.
+
+Runs (libgdx 1.13.6-SNAPSHOT (20250805):):
+```
+ser --apis stream --libs jackson,gson,fastjson,libgdx
+Benchmark                         Mode  Cnt        Score         Error  Units
+Serialization.gson               thrpt   20  4140162.229 ± 1289405.740  ops/s
+Serialization.jackson            thrpt   20  9596064.326 ±  106769.855  ops/s
+Serialization.libgdx_JsonString  thrpt   20  2940658.957 ±   99017.003  ops/s
+Serialization.libgdx_JsonValue   thrpt   20  1916192.351 ±   23665.428  ops/s
+Serialization.libgdx_JsonWriter  thrpt   20  3038512.046 ±   11718.800  ops/s
+
+deser --apis stream --libs jackson,gson,fastjson,libgdx
+Benchmark                           Mode  Cnt        Score        Error  Units
+Deserialization.gson               thrpt   20  1944272.360 ±  15076.934  ops/s
+Deserialization.jackson            thrpt   20  6195549.226 ± 250229.263  ops/s
+Deserialization.libgdx_JsonReader  thrpt   20  3817048.041 ± 156338.907  ops/s
+
+ser --apis databind --libs jackson,gson,fastjson,libgdx
+Benchmark                           Mode  Cnt         Score        Error  Units
+Serialization.fastjson             thrpt   20  12436915.972 ± 959998.501  ops/s
+Serialization.fastjson_features    thrpt   20  15402120.517 ± 498336.255  ops/s
+Serialization.gson                 thrpt   20   5021531.585 ±  12116.517  ops/s
+Serialization.jackson              thrpt   20  10408988.895 ± 196914.095  ops/s
+Serialization.jackson_afterburner  thrpt   20  11455508.231 ± 366570.719  ops/s
+Serialization.jackson_blackbird    thrpt   20  10837417.939 ±  73867.267  ops/s
+Serialization.libgdx_Json          thrpt   20   1518021.645 ±   6462.528  ops/s
+
+Benchmark                             Mode  Cnt        Score        Error  Units
+Deserialization.fastjson             thrpt   20  7345077.631 ± 115918.039  ops/s
+Deserialization.fastjson_features    thrpt   20  8069633.142 ± 153015.910  ops/s
+Deserialization.gson                 thrpt   20  1960689.874 ±  27124.649  ops/s
+Deserialization.jackson              thrpt   20  5344424.880 ± 240437.574  ops/s
+Deserialization.jackson_afterburner  thrpt   20  6297457.793 ± 188526.053  ops/s
+Deserialization.jackson_blackbird    thrpt   20  4942411.392 ± 645946.941  ops/s
+Deserialization.libgdx_Json          thrpt   20  3304291.309 ±  65806.493  ops/s
+```
+
+The charts below have not been updated.
 
 # Benchmark of Java JSON libraries
 

@@ -1,5 +1,12 @@
 package com.github.fabienrenaud.jjb.provider;
 
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonString;
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.JsonWriter;
+import com.badlogic.gdx.utils.Json.Serializer;
+import com.badlogic.gdx.utils.JsonWriter.OutputType;
 import com.dslplatform.json.DslJson;
 import com.dslplatform.json.runtime.Settings;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -310,4 +317,66 @@ public class ClientsJsonProvider implements JsonProvider<Clients> {
                 jsonContext.writeString(value.toString());
                 return true;
             }));
+
+    @Override
+    public Json libgdx_Json() {
+        return LIBGDX_JSON.get();
+    }
+
+    @Override
+    public JsonReader libgdx_JsonReader() {
+   	 return LIBGDX_JSONREADER.get();
+    }
+    
+    @Override
+    public JsonString libgdx_JsonString() {
+   	 JsonString writer = LIBGDX_JSONSTRING.get();
+   	 writer.reset();
+   	 return writer;
+    }
+
+//    @Override
+//    public JsonWriter libgdx_JsonWriter() {
+//   	 return LIBGDX_JSONWRITER.get();
+//    }
+
+    private static final ThreadLocal<Json> LIBGDX_JSON = ThreadLocal.withInitial( () -> {
+       Json json = new Json(OutputType.json);
+       json.setSerializer(UUID.class, new Serializer<UUID>() {
+           public void write (Json json, UUID uuid, Class knownType) {
+               json.writeValue(uuid.toString());
+           }
+           public UUID read (Json json, JsonValue data, Class type) {
+               return UUID.fromString(data.asString());
+           }
+       });
+       json.setSerializer(BigDecimal.class, new Serializer<BigDecimal>() {
+      	 public void write (Json json, BigDecimal value, Class knownType) {
+      		 json.writeValue(value.toPlainString());
+      	 }
+      	 public BigDecimal read (Json json, JsonValue data, Class type) {
+      		 return new BigDecimal(data.asString());
+      	 }
+       });
+       json.setSerializer(LocalDate.class, new Serializer<LocalDate>() {
+      	 public void write (Json json, LocalDate value, Class knownType) {
+      		 json.writeValue(value.toString());
+      	 }
+      	 public LocalDate read (Json json, JsonValue data, Class type) {
+      		 return LocalDate.parse(data.asString());
+      	 }
+       });
+       json.setSerializer(OffsetDateTime.class, new Serializer<OffsetDateTime>() {
+      	 public void write (Json json, OffsetDateTime value, Class knownType) {
+      		 json.writeValue(value.toString());
+      	 }
+      	 public OffsetDateTime read (Json json, JsonValue data, Class type) {
+      		 return OffsetDateTime.parse(data.asString());
+      	 }
+       });
+       return json;
+    });
+    private static final ThreadLocal<JsonReader> LIBGDX_JSONREADER = ThreadLocal.withInitial( () -> new JsonReader());
+    private static final ThreadLocal<JsonString> LIBGDX_JSONSTRING = ThreadLocal.withInitial( () -> new JsonString());
+//    private static final ThreadLocal<JsonWriter> LIBGDX_JSONWRITER = ThreadLocal.withInitial( () -> new JsonWriter());
 }

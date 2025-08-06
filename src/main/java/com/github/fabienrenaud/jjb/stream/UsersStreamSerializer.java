@@ -1,5 +1,8 @@
 package com.github.fabienrenaud.jjb.stream;
 
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonString;
+import com.badlogic.gdx.utils.JsonValue.ValueType;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.github.fabienrenaud.jjb.model.Users;
 import com.github.fabienrenaud.jjb.model.Users.Friend;
@@ -1320,4 +1323,165 @@ public class UsersStreamSerializer implements StreamSerializer<Users> {
         }
         return jso;
     }
+
+    @Override
+    public com.badlogic.gdx.utils.JsonValue libgdx_JsonValue (Users obj) throws IOException {
+       // Real code would almost never be written this way.
+       // Serializing to JSON usually goes from objects directly to JSON, with libgdx's JsonWriter or JsonString.
+       com.badlogic.gdx.utils.JsonValue jso = new com.badlogic.gdx.utils.JsonValue(ValueType.object);
+       if (obj.getUsers() != null) {
+           com.badlogic.gdx.utils.JsonValue jsarr = new com.badlogic.gdx.utils.JsonValue(ValueType.array);
+           for (User u : obj.getUsers())
+               jsarr.addChild(libgdx_JsonValue(u));
+           jso.addChild("users", jsarr);
+       }
+       return jso;
+   }
+
+   public com.badlogic.gdx.utils.JsonValue libgdx_JsonValue (User u) throws IOException {
+       com.badlogic.gdx.utils.JsonValue jso = new com.badlogic.gdx.utils.JsonValue(ValueType.object);
+       if (u.getId() != null) jso.addChild("id", new com.badlogic.gdx.utils.JsonValue(u.getId()));
+       jso.addChild("index", new com.badlogic.gdx.utils.JsonValue(u.getIndex()));
+       if (u.getGuid() != null) jso.addChild("guid", new com.badlogic.gdx.utils.JsonValue(u.getGuid()));
+       jso.addChild("isActive", new com.badlogic.gdx.utils.JsonValue(u.getIsActive()));
+       if (u.getBalance() != null) jso.addChild("balance", new com.badlogic.gdx.utils.JsonValue(u.getBalance()));
+       if (u.getPicture() != null) jso.addChild("picture", new com.badlogic.gdx.utils.JsonValue(u.getPicture()));
+       jso.addChild("age", new com.badlogic.gdx.utils.JsonValue(u.getAge()));
+       if (u.getEyeColor() != null) jso.addChild("eyeColor", new com.badlogic.gdx.utils.JsonValue(u.getEyeColor()));
+       if (u.getName() != null) jso.addChild("name", new com.badlogic.gdx.utils.JsonValue(u.getName()));
+       if (u.getGender() != null) jso.addChild("gender", new com.badlogic.gdx.utils.JsonValue(u.getGender()));
+       if (u.getCompany() != null) jso.addChild("company", new com.badlogic.gdx.utils.JsonValue(u.getCompany()));
+       if (u.getEmail() != null) jso.addChild("email", new com.badlogic.gdx.utils.JsonValue(u.getEmail()));
+       if (u.getPhone() != null) jso.addChild("phone", new com.badlogic.gdx.utils.JsonValue(u.getPhone()));
+       if (u.getAddress() != null) jso.addChild("address", new com.badlogic.gdx.utils.JsonValue(u.getAddress()));
+       if (u.getAbout() != null) jso.addChild("about", new com.badlogic.gdx.utils.JsonValue(u.getAbout()));
+       if (u.getRegistered() != null) jso.addChild("registered", new com.badlogic.gdx.utils.JsonValue(u.getRegistered()));
+       jso.addChild("latitude", new com.badlogic.gdx.utils.JsonValue(u.getLatitude()));
+       jso.addChild("longitude", new com.badlogic.gdx.utils.JsonValue(u.getLongitude()));
+       if (u.getTags() != null) {
+           com.badlogic.gdx.utils.JsonValue jsarr = new com.badlogic.gdx.utils.JsonValue(ValueType.array);
+           for (String t : u.getTags())
+               jsarr.addChild(new com.badlogic.gdx.utils.JsonValue(t));
+           jso.addChild("tags", jsarr);
+       }
+       if (u.getFriends() != null) {
+           com.badlogic.gdx.utils.JsonValue jsarr = new com.badlogic.gdx.utils.JsonValue(ValueType.array);
+           for (Friend f : u.getFriends()) {
+               com.badlogic.gdx.utils.JsonValue jso0 = new com.badlogic.gdx.utils.JsonValue(ValueType.object);
+               jso0.addChild("id", new com.badlogic.gdx.utils.JsonValue(f.getId()));
+               jso0.addChild("name", new com.badlogic.gdx.utils.JsonValue(f.getName()));
+               jsarr.addChild(jso0);
+           }
+           jso.addChild("friends", jsarr);
+       }
+       if (u.getGreeting() != null) jso.addChild("greeting", new com.badlogic.gdx.utils.JsonValue(u.getGreeting()));
+       if (u.getFavoriteFruit() != null) jso.addChild("favoriteFruit", new com.badlogic.gdx.utils.JsonValue(u.getFavoriteFruit()));
+       return jso;
+   }
+
+   @Override
+   public void libgdx_JsonString (JsonString writer, Users obj) throws IOException {
+       writer.object();
+       if (obj.getUsers() != null) {
+           writer.array("users");
+           for (User u : obj.getUsers())
+               libgdx_JsonString(writer, u);
+           writer.pop();
+       }
+       writer.pop();
+   }
+
+   public void libgdx_JsonString (JsonString writer, User u) throws IOException {
+       writer.object();
+       if (u.getId() != null) writer.set("id", u.getId());
+       writer.set("index", u.getIndex());
+       if (u.getGuid() != null) writer.set("guid", u.getGuid());
+       writer.set("isActive", u.getIsActive());
+       if (u.getBalance() != null) writer.set("balance", u.getBalance());
+       if (u.getPicture() != null) writer.set("picture", u.getPicture());
+       writer.set("age", u.getAge());
+       if (u.getEyeColor() != null) writer.set("eyeColor", u.getEyeColor());
+       if (u.getName() != null) writer.set("name", u.getName());
+       if (u.getGender() != null) writer.set("gender", u.getGender());
+       if (u.getCompany() != null) writer.set("company", u.getCompany());
+       if (u.getEmail() != null) writer.set("email", u.getEmail());
+       if (u.getPhone() != null) writer.set("phone", u.getPhone());
+       if (u.getAddress() != null) writer.set("address", u.getAddress());
+       if (u.getAbout() != null) writer.set("about", u.getAbout());
+       if (u.getRegistered() != null) writer.set("registered", u.getRegistered());
+       writer.set("latitude", u.getLatitude());
+       writer.set("longitude", u.getLongitude());
+       if (u.getTags() != null) {
+           writer.array("tags");
+           for (String t : u.getTags())
+               writer.value(t);
+           writer.pop();
+       }
+       if (u.getFriends() != null) {
+           writer.array("friends");
+           for (Friend f : u.getFriends()) {
+               writer.object();
+               writer.set("id", f.getId());
+               writer.set("name", f.getName());
+               writer.pop();
+           }
+           writer.pop();
+       }
+       if (u.getGreeting() != null) writer.set("greeting", u.getGreeting());
+       if (u.getFavoriteFruit() != null) writer.set("favoriteFruit", u.getFavoriteFruit());
+       writer.pop();
+   }
+
+   @Override
+   public void libgdx_JsonWriter (com.badlogic.gdx.utils.JsonWriter writer, Users obj) throws IOException {
+       writer.object();
+       if (obj.getUsers() != null) {
+           writer.array("users");
+           for (User u : obj.getUsers())
+               libgdx_JsonWriter(writer, u);
+           writer.pop();
+       }
+       writer.pop();
+   }
+
+   public void libgdx_JsonWriter (com.badlogic.gdx.utils.JsonWriter writer, User u) throws IOException {
+       writer.object();
+       if (u.getId() != null) writer.set("id", u.getId());
+       writer.set("index", u.getIndex());
+       if (u.getGuid() != null) writer.set("guid", u.getGuid());
+       writer.set("isActive", u.getIsActive());
+       if (u.getBalance() != null) writer.set("balance", u.getBalance());
+       if (u.getPicture() != null) writer.set("picture", u.getPicture());
+       writer.set("age", u.getAge());
+       if (u.getEyeColor() != null) writer.set("eyeColor", u.getEyeColor());
+       if (u.getName() != null) writer.set("name", u.getName());
+       if (u.getGender() != null) writer.set("gender", u.getGender());
+       if (u.getCompany() != null) writer.set("company", u.getCompany());
+       if (u.getEmail() != null) writer.set("email", u.getEmail());
+       if (u.getPhone() != null) writer.set("phone", u.getPhone());
+       if (u.getAddress() != null) writer.set("address", u.getAddress());
+       if (u.getAbout() != null) writer.set("about", u.getAbout());
+       if (u.getRegistered() != null) writer.set("registered", u.getRegistered());
+       writer.set("latitude", u.getLatitude());
+       writer.set("longitude", u.getLongitude());
+       if (u.getTags() != null) {
+           writer.array("tags");
+           for (String t : u.getTags())
+               writer.value(t);
+           writer.pop();
+       }
+       if (u.getFriends() != null) {
+           writer.array("friends");
+           for (Friend f : u.getFriends()) {
+               writer.object();
+               writer.set("id", f.getId());
+               writer.set("name", f.getName());
+               writer.pop();
+           }
+           writer.pop();
+       }
+       if (u.getGreeting() != null) writer.set("greeting", u.getGreeting());
+       if (u.getFavoriteFruit() != null) writer.set("favoriteFruit", u.getFavoriteFruit());
+       writer.pop();
+   }
 }

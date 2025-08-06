@@ -149,8 +149,28 @@ public abstract class JsonBench {
         return null;
     }
 
-    public Object libgdx() throws Exception {
+    /** Databind only. */
+    public Object libgdx_Json () throws Exception {
         return null;
     }
+ 
+    /** Streaming deserialization only. */
+    public Object libgdx_JsonReader() throws Exception {
+   	 return null;
+    }
 
+    /** Streaming serialization only. */
+    public Object libgdx_JsonValue() throws Exception {
+        return null;
+    }
+ 
+    /** Streaming serialization only. */
+    public Object libgdx_JsonString() throws Exception {
+        return null;
+    }
+ 
+    /** Streaming serialization only. */
+    public Object libgdx_JsonWriter() throws Exception {
+        return null;
+    }
 }
