@@ -15,9 +15,7 @@ targetCompatibility = 17
 
 repositories {
     mavenCentral()
-    sonatype {
-        url 'https://central.sonatype.com/repository/maven-snapshots'
-    }
+    maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
 }
 
 ext {
